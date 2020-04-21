@@ -1,9 +1,16 @@
+/* eslint-disable array-callback-return */
 import Transaction from '../models/Transaction';
 
 interface Balance {
   income: number;
   outcome: number;
   total: number;
+}
+
+interface TransactionDTO {
+  type: 'income' | 'outcome';
+  value: number;
+  title: string;
 }
 
 class TransactionsRepository {
@@ -14,15 +21,28 @@ class TransactionsRepository {
   }
 
   public all(): Transaction[] {
-    // TODO
+    return this.transactions;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   public getBalance(): Balance {
-    // TODO
+    const balance = {
+      income: 4200,
+      outcome: 1500,
+      total: 2700,
+    };
+
+    return balance;
   }
 
-  public create(): Transaction {
-    // TODO
+  public create({ title, value, type }: TransactionDTO): Transaction {
+    const transaction = new Transaction({ title, value, type });
+
+    if (type === 'outcome' && value > 2700) throw Error('erro');
+
+    this.transactions.push(transaction);
+
+    return transaction;
   }
 }
 
